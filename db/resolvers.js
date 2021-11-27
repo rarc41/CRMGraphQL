@@ -3,18 +3,21 @@ const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config({ path: "variables.env" });
 
-
 const crearToken = (usuario, secret, expiresIn) => {
   // console.log(usuario);
   const { id, email, nombre, apellido } = usuario;
-  return jwt.sign({ id, email, nombre, apellido}, secret, {expiresIn});
+  return jwt.sign({ id, email, nombre, apellido }, secret, { expiresIn });
 };
 
 // resolvers
 const resolvers = {
   Query: {
-    obtenerCurso: () => "Curso GraphQL",
+    obtenerUsuario: async (_, { token }) => {
+      const usuarioId = await jwt.verify(token, process.env.JWT_SECRET);
+      return usuarioId;
+    },
   },
+
   Mutation: {
     crearUsuario: async (_, { input }) => {
       const { email, password } = input;
