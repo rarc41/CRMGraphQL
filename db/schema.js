@@ -3,11 +3,11 @@ const { gql } = require("apollo-server");
 // schema
 const typeDefs = gql`
   type Usuario {
-    id: ID!
-    nombre: String!
-    apellido: String!
-    email: String!
-    creado: String!
+    id: ID
+    nombre: String
+    apellido: String
+    email: String
+    creado: String
   }
 
   input UsuarioInput {
@@ -22,7 +22,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    crearUsuario(input: UsuarioInput): String
+    crearUsuario(input: UsuarioInput): Usuario
   }
 `;
 
