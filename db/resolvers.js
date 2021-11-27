@@ -5,7 +5,10 @@ const resolvers = {
     obtenerCurso: () => 'Curso GraphQL'
   },
   Mutation: {
-    crearUsuario: () => 'Usuario creado'
+    crearUsuario: (_,{input}) => {
+      console.log(input);
+      return 'Usuario creado';
+    }
   }
 };
 
