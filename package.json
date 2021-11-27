@@ -10,7 +10,9 @@
   "author": "Robin Angel Romero Cordero",
   "license": "ISC",
   "dependencies": {
-    "apollo-server": "^3.5.0"
+    "apollo-server": "^3.5.0",
+    "dotenv": "^10.0.0",
+    "mongoose": "^6.0.13"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

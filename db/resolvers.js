@@ -2,7 +2,7 @@
 // resolvers
 const resolvers = {
   Query: {
-
+    obtenerCurso: () => 'Curso GraphQL'
   },
 };
 
