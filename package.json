@@ -1,0 +1,18 @@
+{
+  "name": "crmgraphql",
+  "version": "1.0.0",
+  "description": "Gettin Start With GraphQL",
+  "main": "index.js",
+  "scripts": {
+    "start": "node .",
+    "dev": "nodemon ."
+  },
+  "author": "Robin Angel Romero Cordero",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^3.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
