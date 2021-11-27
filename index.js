@@ -1,10 +1,25 @@
-const {ApolloServer, gql}=require('apollo-server');
+const { ApolloServer } = require("apollo-server");
+const {
+  ApolloServerPluginLandingPageGraphQLPlayground,
+} = require("apollo-server-core");
+const typeDefs = require('./db/schema')
+const resolvers = require('./db/resolvers')
+
 
 
 // servidor
-const server=new ApolloServer();
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  // el siguiente plugin es para cambiar el landing page a graphql playground
+  plugins: [
+    ApolloServerPluginLandingPageGraphQLPlayground({
+      // options
+    }),
+  ],
+});
 
 // arrancar el servidor
-server.listen().then(({url})=>{
-    console.log(`servidor corriendo en ${url}`);
+server.listen().then(({ url }) => {
+  console.log(`servidor corriendo en ${url}`);
 });
