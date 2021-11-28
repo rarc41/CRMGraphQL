@@ -111,8 +111,6 @@ const resolvers = {
     eliminarProducto: async (_, { id }) => {
       // Revisar si el producto existe
       let producto = await Producto.findById(id);
-      console.log(producto);
-
       if (!producto) {
         throw new Error('producto no encontrado');
       }
