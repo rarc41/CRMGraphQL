@@ -83,6 +83,8 @@ const resolvers = {
         token: crearToken(existeUsuario, process.env.JWT_SECRET, "24h"),
       };
     },
+
+    // Productos
     crearProducto: async (_, { input }) => {
       try {
         const producto = new Producto(input);
@@ -118,6 +120,30 @@ const resolvers = {
 
       await Producto.findOneAndDelete({ _id: id });
       return "Producto Eliminado";
+    },
+
+    // Clientes
+    nuevoCliente: async (_, { input }) => {
+      // revisar si el cliente ya esta registrado
+      const { email } = input;
+      const existeCliente = await Cliente.findOne({ email });
+      if (existeCliente) {
+        throw new Error("El cliente ya esta registrado");
+      }
+      const nuevoCliente = new Cliente(input);
+
+
+      // asignar al vendedor
+      // por el momento se quema el vendedor, posteriormente se debe asignar al usuario logueado
+      nuevoCliente.vendedor = "61a294cd835a347110f25d65";
+
+      // guardarlo en la base de datos
+      try {
+        const resultado = await nuevoCliente.save();
+        return resultado;
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };
