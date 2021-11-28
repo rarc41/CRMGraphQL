@@ -30,9 +30,9 @@ const typeDefs = gql`
   }
 
   input ProductoInput {
-    nombre: String!
-    existencia: Int!
-    precio: Float!
+    nombre: String
+    existencia: Int
+    precio: Float
   }
 
   input AutenticarInput {
@@ -52,6 +52,7 @@ const typeDefs = gql`
 
     #Productos
     crearProducto(input: ProductoInput): Producto
+    actualizarProducto(id: ID!, input: ProductoInput): Producto
   }
 `;
 

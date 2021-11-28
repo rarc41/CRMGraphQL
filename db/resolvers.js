@@ -91,6 +91,22 @@ const resolvers = {
         console.log(error);
       }
     },
+    actualizarProducto: async (_, { id, input }) => {
+      // Revisar si el producto existe
+      let producto = await Producto.findById(id);
+      if (!producto) {
+        throw new Error("Producto no encontrado");
+      }
+      try {
+        const productoUpdated = await Producto.findByIdAndUpdate(id, input, {
+          new: true,
+          runValidators: true,
+        });
+        return productoUpdated;
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 };
 
