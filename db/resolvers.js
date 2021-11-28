@@ -33,7 +33,7 @@ const resolvers = {
         throw new Error("Producto no encontrado");
       }
       return producto;
-    }
+    },
   },
 
   Mutation: {
@@ -85,7 +85,7 @@ const resolvers = {
     crearProducto: async (_, { input }) => {
       try {
         const producto = new Producto(input);
-        const resultado=await producto.save();
+        const resultado = await producto.save();
         return resultado;
       } catch (error) {
         console.log(error);
@@ -106,6 +106,19 @@ const resolvers = {
       } catch (error) {
         console.log(error);
       }
+    },
+
+    eliminarProducto: async (_, { id }) => {
+      // Revisar si el producto existe
+      let producto = await Producto.findById(id);
+      console.log(producto);
+
+      if (!producto) {
+        throw new Error('producto no encontrado');
+      }
+
+      await Producto.findOneAndDelete({ _id: id });
+      return "Producto Eliminado";
     },
   },
 };
