@@ -44,13 +44,28 @@ const resolvers = {
       }
     },
     obtenerClientesVendedor: async (_, {}, ctx) => {
-      
+
       try {
         const clientes = await Cliente.find({ vendedor: ctx.usuario.id });
         return clientes;
       } catch (error) {
         console.log(error);
       }
+    },
+
+    obtenerCliente: async (_, { id }, ctx) => {
+      // revisar si el cliente existe
+      const cliente = await Cliente.findById(id);
+      if (!cliente) {
+        throw new Error("Cliente no encontrado");
+      }
+
+      // solo quien lo creo puede verlo
+      if (cliente.vendedor.toString() !== ctx.usuario.id) {
+        throw new Error("No tienes permisos para ver este cliente");
+      }
+
+      return cliente;
     }
   },
 
