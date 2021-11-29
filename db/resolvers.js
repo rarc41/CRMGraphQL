@@ -1,6 +1,7 @@
 const Usuario = require("../models/Usuario");
 const Producto = require("../models/Producto");
 const Cliente = require("../models/Cliente");
+const Pedido = require("../models/Pedido");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config({ path: "variables.env" });
@@ -219,6 +220,43 @@ const resolvers = {
 
       await Cliente.findOneAndDelete({ _id: id });
       return "Cliente Eliminado";
+    },
+    nuevoPedido: async (_, { input }, ctx) => {
+      // revisar si el cliente existe
+      const { cliente } = input;
+      let clienteExiste = await Cliente.findById(cliente);
+      if (!clienteExiste) {
+        throw new Error("Cliente no encontrado");
+      }
+
+      // revisar si el cliente pertence al vendedor autenticado
+      if (clienteExiste.vendedor.toString() !== ctx.usuario.id) {
+        throw new Error("No tienes permisos para crear un pedido a este cliente");
+      }
+
+      // revisar si el stock es suficiente
+      // const { pedido } = input;
+      // const productosValidados = pedido.map(async (producto) => {
+      //   const productoExiste = await Producto.findById(producto.id);
+      //   if (!productoExiste) {
+      //     throw new Error("Producto no encontrado");
+      //   }
+      //   if (productoExiste.existencia < producto.cantidad) {
+      //     throw new Error("No hay suficiente stock");
+      //   }
+      //   return producto;
+      // });
+
+      // // crear el pedido
+      // const nuevoPedido = new Pedido(input);
+
+      // // guardarlo en la base de datos
+      // try {
+      //   const resultado = await nuevoPedido.save();
+      //   return resultado;
+      // } catch (error) {
+      //   console.log(error);
+      // }
     }
   },
 };
