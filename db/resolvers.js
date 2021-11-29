@@ -235,17 +235,13 @@ const resolvers = {
       }
 
       // revisar si el stock es suficiente
-      // const { pedido } = input;
-      // const productosValidados = pedido.map(async (producto) => {
-      //   const productoExiste = await Producto.findById(producto.id);
-      //   if (!productoExiste) {
-      //     throw new Error("Producto no encontrado");
-      //   }
-      //   if (productoExiste.existencia < producto.cantidad) {
-      //     throw new Error("No hay suficiente stock");
-      //   }
-      //   return producto;
-      // });
+      for await (const articulo of input.pedido) {
+        const { id } = articulo;
+        const producto = await Producto.findById(id);
+        if (producto.existencia< articulo.cantidad) {
+          throw new Error(`El producto: ${producto.nombre} excede el stock`);
+        }
+      }
 
       // // crear el pedido
       // const nuevoPedido = new Pedido(input);
