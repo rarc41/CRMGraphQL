@@ -32,6 +32,7 @@ const ClienteSchema = mongoose.Schema({
     },
     vendedor: {
         type: mongoose.Schema.Types.ObjectId,
+        required: true,
         ref: 'Usuario',
     },
 })

@@ -123,8 +123,9 @@ const resolvers = {
     },
 
     // Clientes
-    nuevoCliente: async (_, { input }) => {
+    nuevoCliente: async (_, { input }, ctx) => {
       // revisar si el cliente ya esta registrado
+      console.log(ctx);
       const { email } = input;
       const existeCliente = await Cliente.findOne({ email });
       if (existeCliente) {
@@ -134,8 +135,7 @@ const resolvers = {
 
 
       // asignar al vendedor
-      // por el momento se quema el vendedor, posteriormente se debe asignar al usuario logueado
-      nuevoCliente.vendedor = "61a294cd835a347110f25d65";
+      nuevoCliente.vendedor = ctx.usuario.id;
 
       // guardarlo en la base de datos
       try {
