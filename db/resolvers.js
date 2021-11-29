@@ -177,6 +177,49 @@ const resolvers = {
         console.log(error);
       }
     },
+    actualizarCliente: async (_, { id, input }, ctx) => {
+      // revisar si el cliente existe
+      let cliente = await Cliente.findById(id);
+      if (!cliente) {
+        throw new Error("Cliente no encontrado");
+      }
+
+      // solo un vendedor puede actualizar un cliente
+      if (cliente.vendedor.toString() !== ctx.usuario.id) {
+        throw new Error("No tienes permisos para actualizar este cliente");
+      }
+
+      // actualizar el cliente
+      try {
+        const clienteActualizado = await Cliente.findByIdAndUpdate(
+          id,
+          input,
+          {
+            new: true,
+            runValidators: true,
+          }
+        );
+        return clienteActualizado;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    
+    eliminarCliente: async (_, { id }, ctx) => {
+      // revisar si el cliente existe
+      let cliente = await Cliente.findById(id);
+      if (!cliente) {
+        throw new Error("Cliente no encontrado");
+      }
+
+      // solo un vendedor puede eliminar un cliente
+      if (cliente.vendedor.toString() !== ctx.usuario.id) {
+        throw new Error("No tienes permisos para eliminar este cliente");
+      }
+
+      await Cliente.findOneAndDelete({ _id: id });
+      return "Cliente Eliminado";
+    }
   },
 };
 
