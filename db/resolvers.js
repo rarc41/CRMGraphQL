@@ -240,19 +240,26 @@ const resolvers = {
         const producto = await Producto.findById(id);
         if (producto.existencia< articulo.cantidad) {
           throw new Error(`El producto: ${producto.nombre} excede el stock`);
+        } else {
+          // restar la cantidad al stock disponible
+          producto.existencia -= articulo.cantidad;
+          await producto.save();
         }
       }
 
-      // // crear el pedido
-      // const nuevoPedido = new Pedido(input);
+      // crear el pedido
+      const nuevoPedido = new Pedido(input);
 
-      // // guardarlo en la base de datos
-      // try {
-      //   const resultado = await nuevoPedido.save();
-      //   return resultado;
-      // } catch (error) {
-      //   console.log(error);
-      // }
+      // asignar el vendedor
+      nuevoPedido.vendedor = ctx.usuario.id;
+
+      // guardarlo en la base de datos
+      try {
+        const resultado = await nuevoPedido.save();
+        return resultado;
+      } catch (error) {
+        console.log(error);
+      }
     }
   },
 };
