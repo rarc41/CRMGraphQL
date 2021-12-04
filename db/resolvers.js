@@ -109,7 +109,81 @@ const resolvers = {
       } catch (error) {
         console.log(error);
       }
-    }
+    },
+
+    mejoresClientes: async () => {
+      try {
+        const clientes = await Pedido.aggregate([
+          {
+            $match: { estado: "COMPLETADO" },
+          },
+          {
+            $group: {
+              _id: "$cliente",
+              total: { $sum: "$total" },
+            },
+          },
+          {
+            $lookup: {
+              from: "clientes",
+              localField: "_id",
+              foreignField: "_id",
+              as: "cliente",
+            },
+          },
+          // {
+          //   $limit: 10,
+          // },
+          // {
+          //   $sort: { total: -1 },
+          // },
+        ]);
+        return clientes;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    mejoresVendedores: async () => {
+      try {
+        const vendedores = await Pedido.aggregate([
+          {
+            $match: { estado: "COMPLETADO" },
+          },
+          {
+            $group: {
+              _id: "$vendedor",
+              total: { $sum: "$total" },
+            },
+          },
+          {
+            $lookup: {
+              from: "usuarios",
+              localField: "_id",
+              foreignField: "_id",
+              as: "vendedor",
+            },
+          },
+          // {
+          //   $limit: 10,
+          // },
+          // {
+          //   $sort: { total: -1 },
+          // },
+        ]);
+        return vendedores;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    buscarProducto: async (_, { nombre }) => {
+      const productos = await Producto.find({
+        $text: { $search: nombre },
+      }).limit(10);
+
+      return productos;
+    },
   },
 
   Mutation: {
@@ -339,7 +413,6 @@ const resolvers = {
         }
       }
 
-
       // actualizar el pedido
       try {
         const pedidoActualizado = await Pedido.findByIdAndUpdate(id, input, {
@@ -384,7 +457,6 @@ const resolvers = {
           await producto.save();
         }
       }
-
 
       // eliminar el pedido
       await Pedido.findOneAndDelete({ _id: id });
