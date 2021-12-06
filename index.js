@@ -34,11 +34,11 @@ const server = new ApolloServer({
   },
 
   // el siguiente plugin es para cambiar el landing page a graphql playground
-  plugins: [
-    ApolloServerPluginLandingPageGraphQLPlayground({
-      // options
-    }),
-  ],
+  // plugins: [
+  //   ApolloServerPluginLandingPageGraphQLPlayground({
+  //     // options
+  //   }),
+  // ],
 });
 
 // arrancar el servidor
